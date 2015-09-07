@@ -29,18 +29,6 @@ AvlTree SingleLeft(AvlTree T){
     return Top;
 }
 
-AvlTree DoubleLeft(AvlTree T){
-    AvlTree Top = T->Left->Right;
-    T->Left->Right = Top->Left;
-    Top->Left = T->Left;
-    T->Left = Top->Right;
-    Top->Right = T;
-    T->height = Max(Height(T->Left), Height(T->Right)) + 1;
-    Top->Left->height = Max(Height(T->Left->Left), Height(T->Left->Right)) + 1;
-    Top->height = Max(Height(Top->Left), Height(Top->Right)) + 1;
-    return Top;
-}
-
 AvlTree SingleRight(AvlTree T){
     AvlTree Top = T->Right;
     T->Right = Top->Left;
@@ -51,15 +39,13 @@ AvlTree SingleRight(AvlTree T){
 }
 
 AvlTree DoubleRight(AvlTree T){
-    AvlTree Top = T->Right->Left;
-    T->Right->Left = Top->Right;
-    Top->Right = T->Right;
-    T->Right = Top->Left;
-    Top->Left = T;
-    T->height = Max(Height(T->Left), Height(T->Right)) + 1;
-    Top->Right->height = Max(Height(T->Right->Left), Height(T->Right->Right)) + 1;
-    Top->height = Max(Height(Top->Left), Height(Top->Right)) + 1;
-    return Top;
+    T->Right = SingleLeft(T->Right);
+    return SingleRight(T);
+}
+
+AvlTree DoubleLeft(AvlTree T){
+    T->Left = SingleRight(T->Left);
+    return SingleLeft(T);
 }
 
 AvlTree Insert(int x, AvlTree T){
@@ -76,10 +62,10 @@ AvlTree Insert(int x, AvlTree T){
             else
                 T = DoubleLeft(T);
         }
-    } else if(x > T->val) {
+    } else if(x >= T->val) {
         T->Right = Insert(x, T->Right);
         if(Height(T->Right) - Height(T->Left) == 2){
-            if(x > T->Right->val)
+            if(x >= T->Right->val)
                 T = SingleRight(T);
             else
                 T = DoubleRight(T);
@@ -89,15 +75,15 @@ AvlTree Insert(int x, AvlTree T){
     return T;
 }
 
-int main(){
+int main() {
     int times;
     AvlTree tree = NULL;
     cin >> times;
-    for(int i = 0; i < times; i++){
+    for (int i = 0; i < times; i++) {
         int num;
         cin >> num;
         tree = Insert(num, tree);
     }
-    if(tree && tree->val)
+    if (tree && tree->val)
         cout << tree->val << endl;
 }
