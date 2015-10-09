@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  JOJO
-//
-//  Created by 艺 王 on 10/3/15.
-//  Copyright © 2015 WyTiny. All rights reserved.
-//
 
 #include <iostream>
 #include <algorithm>
